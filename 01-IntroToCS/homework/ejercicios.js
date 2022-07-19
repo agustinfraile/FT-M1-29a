@@ -1,17 +1,23 @@
-function DecimalABinario(num) {
-    
-    let restoDivision;
+const BinarioADecimal = (num) => {
+    let arrResto = [];
+    let resto;
+    let numeroBinario;
 
-    // bucle para ir dividiendo el numero en 2 hasta que el resultado sea menor que 1
-    while ( num / 2 > 1  ) {
-        num
-        restoDivision =  num % 2;
-        restoDivision;
+    while ( num > 0  ) {
+        resto = num % 2;
+        resto;
 
-        num = Math.trunc(num / 2);
-        num
+        num = Math.floor(num / 2);
+        num;    
+
+        arrResto.push(resto)
+        arrResto.reverse()
+
     }
-    
+
+    numeroBinario = arrResto.join('')
+    return numeroBinario;
 }
 
-DecimalABinario('9')
+BinarioADecimal('8');
+console.log(BinarioADecimal('8')) 
