@@ -1,5 +1,7 @@
 "use strict";
 
+const { cache } = require("@11ty/eleventy/src/TemplateCache");
+
 // Closures
 
 function counter() {
@@ -19,6 +21,11 @@ function counter() {
   otroContador()      // 2
   otroContador()      // 3
    */
+
+  let contador = 1;
+  return function(){
+    return contador++;
+  };
 }
 
 function cacheFunction(cb) {
@@ -41,6 +48,28 @@ function cacheFunction(cb) {
   squareCache(5)    // no volverá a invocar a square, simplemente buscará en la caché cuál es el resultado de square(5) y lo retornará (tip: si usaste un objeto, podés usar hasOwnProperty) 
 
   */
+
+  // creo el objeto vacio que luego ire llenando con la funcion
+  let obj = {};
+  
+  // retorno la funcion callback y le paso como argumento 
+  return function(arg){
+    // condicional que me preguntara si es que existe el argumento como propiedad en el objeto 
+    if (obj.hasOwnProperty(arg)) {
+      // en caso de que si exista me deberia retornar el argumento como propiedad del objeto
+      return obj[arg];
+    }
+
+    // en caso de que no exista la propiedad en el objeto 
+    // quiere decir que todavia no se calculo ese valor
+    // por lo que debo calcularlo llamando al callback que cumple esa funcion
+    // igualo el numero como nueva propiedad del objeto con el callback pasandole por parametro el argumento que es el numero
+    obj[arg] = cb(arg)
+
+    // finalmente retorno el argumento como propiedad del objeto
+    return obj[arg];
+  };
+  
 }
 
 // Bind
@@ -67,8 +96,8 @@ function getNombre() {
   Usando el método bind() guardar, en las dos variables declaradas a continuación, dos funciones que actúen como getNombre pero retornen el nombre del instructor y del alumno, respectivamente.
 */
 
-let getNombreInstructor;
-let getNombreAlumno;
+let getNombreInstructor = getNombre.bind(instructor);
+let getNombreAlumno = getNombre.bind(alumno);
 
 /*
   Ejercicio 4
@@ -80,9 +109,9 @@ function crearCadena(delimitadorIzquierda, delimitadorDerecha, cadena) {
   return delimitadorIzquierda + cadena + delimitadorDerecha;
 }
 
-let textoAsteriscos;
-let textoGuiones;
-let textoUnderscore;
+let textoAsteriscos = crearCadena.bind(this ,'*', '*');
+let textoGuiones = crearCadena.bind(this, '-', '-');
+let textoUnderscore = crearCadena.bind(this, '_', '_');
 
 // No modifiquen nada debajo de esta linea
 // --------------------------------
