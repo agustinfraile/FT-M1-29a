@@ -165,7 +165,7 @@ HashTable.prototype.set = function (clave, valor) {
 HashTable.prototype.get = function (clave) {
   let index = this.hash(clave); //hasheo la clave retornando el numero
   return this.buckets[index][clave]; //retorno el valor
-}
+} 
 
 HashTable.prototype.hasKey = function (clave) {
   let index = this.hash(clave);
